@@ -1,18 +1,18 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import ProfilePage from './profile/ProfilePage';
-import HomePage from './home/HomePage';
+import MainPage from './MainPage';
 
 function App() {
 	return (
-		<div>
+		<>
 			<BrowserRouter>
 				<Routes>
-					<Route path='/' element={<HomePage />}/>
+					<Route path='/*' element={<MainPage />}/>
 					<Route path='/profile/*' element={<ProfilePage />}/>
 				</Routes>
 			</BrowserRouter>
-		</div>
+		</>
 	);
 }
 
