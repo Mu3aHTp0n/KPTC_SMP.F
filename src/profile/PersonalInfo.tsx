@@ -87,7 +87,11 @@ export default function PersonalInfo({userData}: Props) {
                                 isHasRequestButton={true} 
                                 maxLength={6} 
                                 styles='mt-4'/>
-                    <button disabled={isDisabled} className="w-full mt-8 p-3">Подтвердить</button>
+                    <button disabled={isDisabled} className="w-full mt-8 p-3" onClick={() => setCurrentModal(1.5)}>Подтвердить</button>
+                </ProfileModal> }
+                { currentModal === 1.5 && 
+                <ProfileModal title="">
+
                 </ProfileModal> }
                 { currentModal === 2 && 
                 <ProfileModal title='Установите новый пароль'>
@@ -96,6 +100,7 @@ export default function PersonalInfo({userData}: Props) {
                     <form action="" onSubmit={event => event.preventDefault()}>
                         <InputField placeholderInput="Старый пароль" 
                                     type="password"
+                                    minLength={8}
                                     key={1}
                                     value={passChange.oldPassword}
                                     handleChange={handleChange('oldPassword')}

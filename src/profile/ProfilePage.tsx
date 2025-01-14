@@ -26,10 +26,10 @@ export default function ProfilePage() {
 	}, []);
 
 	return (
-            <div className="bg-[#fafafc] h-[100vh]">
+            <div className="bg-[#191919] h-[100vh]">
                 <ProfileHeader nickname={isPending ? 'Loading...' : userDto.nickname}/>
                 <main className="max-w-[1200px] mx-auto pl-3 pr-6">
-                    <h2 className="border-b border-solid border-[#e7e8ee] mt-10 mr-4 mb-4 pb-4">
+                    <h2 className="border-b border-solid text-gray-200 border-neutral-400 mt-10 mb-4 pb-4">
                         Центр учётной записи
                     </h2>
                     <section className='flex'>
