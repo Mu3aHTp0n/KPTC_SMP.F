@@ -1,5 +1,5 @@
 .articles__container:has(.article:hover) .article:not(:hover) {
-    opacity: 0.5;
+    opacity: 0.65;
     filter: blur(1px);
     transition: 
         opacity 250ms ease-in-out,
