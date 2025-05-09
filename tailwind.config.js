@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       transitionDuration: {
-        DEFAULT: '270ms'
+        DEFAULT: '250ms'
       },
       transitionTimingFunction: {
         DEFAULT: 'ease-in-out'
