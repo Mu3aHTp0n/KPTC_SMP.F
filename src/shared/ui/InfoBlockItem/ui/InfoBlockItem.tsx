@@ -8,7 +8,7 @@ interface Props {
 	endItem?: ReactNode | string;
 }
 
-export default function InfoBlockItem({ itemTitle, subTitle, endItem }: Props) {
+export const InfoBlockItem = ({ itemTitle, subTitle, endItem }: Props) => {
 	return (
 		<div className={styles.container}>
 			<div>

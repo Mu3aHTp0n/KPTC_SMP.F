@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import ProfileInfoBlock from "@shared/ui/ProfileInfoBlock/ProfileInfoBlock";
-import InfoBlockItem from "@shared/ui/InfoBlockItem/InfoBlockItem";
+import { InfoBlockItem } from '@shared/ui/InfoBlockItem';
 
 interface Props {
 	userData: {
