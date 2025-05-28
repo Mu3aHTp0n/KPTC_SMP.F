@@ -7,7 +7,7 @@ import ChangePasswordModal from '@widgets/ChangePasswordModal/ui/ChangePasswordM
 import { ChangeEmailModal } from '@widgets/ChangeEmailModal/ui/ChangeEmailModal';
 import Modal from '@shared/ui/Modal/ui/Modal';
 import ProfileInfoBlock from '@shared/ui/ProfileInfoBlock/ProfileInfoBlock';
-import InfoBlockItem from '@shared/ui/InfoBlockItem/ui/InfoBlockItem';
+import { InfoBlockItem } from '@shared/ui/InfoBlockItem/ui/InfoBlockItem';
 import Loader from '@shared/ui/Loader/Loader';
 import { TextButton } from '@shared/ui/TextButton';
 
