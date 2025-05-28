@@ -40,7 +40,6 @@ export const HomeHeader = () => {
 					setUserPhoto(response.data.avatarUrl);
 					setImageUrl(response.data.avatarUrl);
 				} catch (error) {
-					console.log(error);
 					console.error('Ошибка при получении изображения:', error);
 					setUserPhoto(defaultUserIcon);
 				}

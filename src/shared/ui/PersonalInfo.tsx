@@ -1,13 +1,15 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, ChangeEvent, useState } from 'react';
+import { useUserStore } from '@app/store/user';
 
-import ChangeEmailModal from '@widgets/ChangeEmailModal/ui/ChangeEmailModal';
-
-import ProfileInfoBlock from '@shared/ui/ProfileInfoBlock/ProfileInfoBlock';
-import InfoBlockItem from '@shared/ui/InfoBlockItem/InfoBlockItem';
-import TextButton from '@shared/ui/TextButton/TextButton';
-import ChangePasswordModal from '@widgets/ChangePasswordModal/ui/ChangePasswordModal';
 import { changeUserPhoto } from '@entities/user/api/changeUserPhoto';
-import Modal from '@shared/ui/Modal/Modal';
+
+import ChangePasswordModal from '@widgets/ChangePasswordModal/ui/ChangePasswordModal';
+import { ChangeEmailModal } from '@widgets/ChangeEmailModal/ui/ChangeEmailModal';
+import Modal from '@shared/ui/Modal/ui/Modal';
+import ProfileInfoBlock from '@shared/ui/ProfileInfoBlock/ProfileInfoBlock';
+import InfoBlockItem from '@shared/ui/InfoBlockItem/ui/InfoBlockItem';
+import Loader from '@shared/ui/Loader/Loader';
+import { TextButton } from '@shared/ui/TextButton';
 
 interface Props {
 	userData: {
@@ -18,14 +20,17 @@ interface Props {
 
 export default function PersonalInfo({ userData }: Props) {
 
+	const setImageUrl = useUserStore(state => state.setImageUrl)
+
 	const [currentModal, setCurrentModal] = useState(1);
 	const [isShow, setIsShow] = useState(false);
-	const [selectedImage, setSelectedImage] = useState(null);
+	const [selectedImage, setSelectedImage] = useState<File | null>(null);
 	const [previewImage, setPreviewImage] = useState('');
 
 	const [modalTitle, setModalTitle] = useState('');
 
 	const [errorMessage, setErrorMessage] = useState('');
+	const [isPending, setIsPending] = useState(false);
 
 	const openModal = (number: number) => {
 		setIsShow(true);
@@ -43,24 +48,40 @@ export default function PersonalInfo({ userData }: Props) {
 		}
 	};
 
-	const handleUploadImage = (event: FormEvent<HTMLInputElement>) => {
-		const file = event.target.files?.[0];
-		setSelectedImage(file)
-		if (file) {
-			const objectUrl = URL.createObjectURL(file);
-			setPreviewImage(objectUrl);
+	const handleUploadImage = (event: ChangeEvent<HTMLInputElement>) => {
+		if (event.target.files && event.target.files.length > 0) {
+			const file = event.target.files[0];
+			setSelectedImage(file)
+			if (file) {
+				const objectUrl = URL.createObjectURL(file);
+				setPreviewImage(objectUrl);
+			}
 		}
 	};
 
 	const handleImageSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+		if (!selectedImage) {
+			setErrorMessage('Отсутствует изображение')
+			return
+		}
+		setErrorMessage('')
+		setIsPending(true);
 		try {
 			const formData = new FormData();
 			formData.append('image', selectedImage);
-			await changeUserPhoto(formData);
+			const response = await changeUserPhoto(formData);
 			setErrorMessage('');
+			setImageUrl(response.data.avatarUrl);
+			alert('Аватарка успешно изменена')
+			setIsShow(false);
+			setSelectedImage(null);
+			setPreviewImage('')
 		} catch (error) {
 			setErrorMessage(error.message);
+		}
+		finally {
+			setIsPending(false);
 		}
 	};
 
@@ -107,8 +128,8 @@ export default function PersonalInfo({ userData }: Props) {
 				setClose={handleModalClose}
 				title={modalTitle}
 			>
-				{currentModal === 1 && <ChangeEmailModal userData={userData} />}
-				{currentModal === 2 && <ChangePasswordModal />}
+				{currentModal === 1 && <ChangeEmailModal setShow={setIsShow} userData={userData} />}
+				{currentModal === 2 && <ChangePasswordModal setShow={setIsShow} />}
 				{currentModal === 3 && (
 					<form onSubmit={handleImageSubmit}>
 						{previewImage && (
@@ -124,7 +145,13 @@ export default function PersonalInfo({ userData }: Props) {
 							onChange={handleUploadImage}
 						/>
 						{errorMessage && <p className={'text-red-700'}>{errorMessage}</p>}
-						<button type={'submit'}>Отправить</button>
+						<button disabled={isPending} type={'submit'}>Отправить</button>
+						{ isPending && (
+							<>
+								<Loader/>
+								<p>Отправка запроса</p>
+							</>
+						)}
 					</form>
 				)}
 			</Modal>

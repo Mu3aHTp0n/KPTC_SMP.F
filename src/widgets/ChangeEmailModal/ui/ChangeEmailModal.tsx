@@ -1,30 +1,32 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useUserStore } from '@app/store/user';
 
 import { sendCurrentEmailCode } from '@entities/user/api/sendCurrentEmailCode';
+import { sendConfirmationCode } from '@entities/user';
+import { changeUserEmail } from '@entities/user/api/changeUserEmail';
 
 import InputField from '@shared/ui/InputField/ui/InputField';
 import InputCode from '@shared/ui/InputCode/ui/InputCode';
-import { sendConfirmationCode } from '@entities/user';
-import { useUserStore } from '@app/store/user';
-import { changeUserEmail } from '@entities/user/api/changeUserEmail';
+
+import emailVerification from '@shared/assets/emailVerification.png'
 
 interface Props {
 	userData: {
-		id: number;
 		username: string;
 		email: string;
 	};
+	setShow: (value: boolean) => void;
 }
 
-function ChangeEmailModal({ userData }: Props) {
+export const ChangeEmailModal= ({ userData, setShow }: Props) => {
 	const { register } = useForm();
 
 	const [code, setCode] = useState('');
 	const [newEmailData, setNewEmailData] = useState({
 		email: '',
 		code: '',
-		actionTicket: sessionStorage.getItem('actionTicket'),
+		actionTicket: sessionStorage.getItem('actionTicket')!,
 	});
 	const [errorMessage, setErrorMessage] = useState('');
 	const [isHasTicket, setIsHasTicket] = useState(
@@ -32,22 +34,23 @@ function ChangeEmailModal({ userData }: Props) {
 	);
 	const [isSent, setIsSent] = useState(false);
 	const [timer, setTimer] = useState(0);
+	const [isPending, setIsPending] = useState(false);
 
 	const setEmail = useUserStore(state => state.setEmail)
 
 	const getCode = async () => {
+		setIsSent(true);
+		setTimer(30)
+		const interval = setInterval(() => setTimer(prev => prev - 1), 1000)
+		setTimeout(() => {
+			setIsSent(false);
+			clearInterval(interval);
+		}, 30000)
 		try {
-			const response = await sendCurrentEmailCode(userData.email);
+			await sendCurrentEmailCode(userData.email);
 			setErrorMessage('');
-			alert(response.data.message);
-			setIsSent(true);
-			setTimer(30)
-			const interval = setInterval(() => setTimer(prev => prev - 1), 1000)
-			setTimeout(() => {
-				setIsSent(false);
-				clearInterval(interval);
-			}, 30000)
 		} catch (error) {
+			// @ts-ignore
 			setErrorMessage(error.message);
 		}
 	};
@@ -57,6 +60,10 @@ function ChangeEmailModal({ userData }: Props) {
 		try {
 			const response = await sendConfirmationCode(code);
 			sessionStorage.setItem('actionTicket', response.data.actionTicket);
+			setTimeout(() => {
+				sessionStorage.removeItem('actionTicket');
+				alert('Истёк тикет смены почты, пожалуйста отправьте запрос ещё раз')
+			}, 600000)
 			setErrorMessage('');
 			setIsHasTicket(true);
 			setNewEmailData({...newEmailData, actionTicket: response.data.actionTicket})
@@ -68,11 +75,17 @@ function ChangeEmailModal({ userData }: Props) {
 
 	const handleNewEmailSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+		if (isPending) return;
 		try {
+			setIsPending(true);
 			await changeUserEmail(newEmailData)
 			sessionStorage.removeItem('actionTicket');
+			setShow(false)
 		} catch (error) {
 			console.log(error);
+		}
+		finally {
+			setIsPending(false);
 		}
 	}
 
@@ -89,7 +102,7 @@ function ChangeEmailModal({ userData }: Props) {
 
 	return (
 		<>
-			<div className="w-24 h-24 mx-auto mb-8 bg-[url('https://account.hoyoverse.com/login-platform/default-light.6fd87a1d.png')] bg-cover"></div>
+			<img src={emailVerification} alt={'📭'} className="w-24 h-24 mx-auto mb-8"/>
 			{!isHasTicket ? (
 				<>
 					<p className='m-2'>
@@ -98,7 +111,7 @@ function ChangeEmailModal({ userData }: Props) {
 					<div className='flex items-center justify-center gap-2 mb-2'>
 						<p>{userData.email}</p>
 						<button type='submit' disabled={!!timer} className='btn btn-primary' onClick={getCode}>
-							{timer ?  timer  : 'Отправить'}
+							{isSent ?  timer  : 'Отправить'}
 						</button>
 					</div>
 					<form onSubmit={handleEmailSubmit}>
@@ -151,5 +164,3 @@ function ChangeEmailModal({ userData }: Props) {
 		</>
 	);
 }
-
-export default ChangeEmailModal;

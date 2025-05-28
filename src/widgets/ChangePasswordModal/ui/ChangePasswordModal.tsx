@@ -1,26 +1,27 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { changeUserPassword } from '@entities/user/api';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck } from '@fortawesome/free-regular-svg-icons';
-
-import { changeUserPassword } from '@entities/user/api';
 import InputField from '@shared/ui/InputField/ui/InputField';
 
-interface IForm {
-	oldPassword: string;
-	password: string;
-	confirmPassword: string;
-}
+import cn from 'classnames';
+
+import changePassword from '@shared/assets/changePassword.png'
 
 interface IErrorMessage {
 	message?: string;
 	password?: string;
 	confirmPassword?: string;
 }
+interface IProps {
+	setShow: (value: boolean) => void;
+}
 
-function ChangePasswordModal() {
-	const { register } = useForm<IForm>();
+function ChangePasswordModal({ setShow }: IProps) {
+	const { register } = useForm();
 
 	const [formData, setFormData] = useState({
 		oldPassword: '',
@@ -66,18 +67,24 @@ function ChangePasswordModal() {
 	};
 
 	const changePasswordRequest = async () => {
+		if (isDisabled) return;
 		try {
+			setIsDisabled(true);
 			await changeUserPassword(formData);
 			setErrorMessage({});
 			alert('Пароль успешно изменён');
+			setShow(false)
 		} catch (error) {
 			setErrorMessage(error);
+		}
+		finally {
+			setIsDisabled(false);
 		}
 	};
 
 	return (
 		<>
-			<div className="w-24 h-24 mx-auto mb-8 bg-[url('https://account.hoyoverse.com/login-platform/default-light.bbf280c7.png')] bg-cover"></div>
+			<img className="w-24 h-24 mx-auto mb-8" src={changePassword} alt={'🔒'}/>
 			<p className='m-2'>Пожалуйста, установите надёжный пароль</p>
 			<form onSubmit={event => event.preventDefault()}>
 				<InputField
@@ -125,28 +132,27 @@ function ChangePasswordModal() {
 			<ul className='text-[#6B607B] text-left my-4 pl-2'>
 				<li className='mt-2'>
 					<FontAwesomeIcon
-						className={`mr-2 ${passCheck.isNotEmpty ? 'text-[#4A88FC]' : 'text-[#6B607B]'}`}
+						className={cn('mr-2', passCheck.isNotEmpty ? 'text-[#4A88FC]' : 'text-[#6B607B]')}
 						icon={faCircleCheck}
 					/>
 					Все поля заполнены
 				</li>
 				<li className='mt-2'>
 					<FontAwesomeIcon
-						className={`mr-2 ${passCheck.isLength ? 'text-[#4A88FC]' : 'text-[#6B607B]'}`}
+						className={cn('mr-2', passCheck.isLength ? 'text-[#4A88FC]' : 'text-[#6B607B]')}
 						icon={faCircleCheck}
 					/>
 					Длина пароля от 8 до 30 символов
 				</li>
 				<li className='mt-2'>
 					<FontAwesomeIcon
-						className={`mr-2 ${passCheck.isMatch ? 'text-[#4A88FC]' : 'text-[#6B607B]'}`}
+						className={cn('mr-2', passCheck.isMatch ? 'text-[#4A88FC]' : 'text-[#6B607B]')}
 						icon={faCircleCheck}
 					/>
 					Новые пароли должны совпадать
 				</li>
 			</ul>
 			<button
-				disabled={isDisabled}
 				className='w-full p-3 mt-2'
 				onClick={() => changePasswordRequest()}
 			>
