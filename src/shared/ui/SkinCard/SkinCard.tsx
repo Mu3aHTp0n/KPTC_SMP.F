@@ -1,3 +1,5 @@
+import style from './SkinCard.module.scss'
+
 interface Props {
     source: string,
     alt?: string,
@@ -6,9 +8,9 @@ interface Props {
 
 export const SkinCard = ({source, alt, styles}: Props) => {
 	return (
-		<div className="bg-[#383838]">
+		<div className={style.card}>
 			<img
-				className={`${styles}`}
+				className={styles}
 				src={source}
 				alt={alt}
 			/>

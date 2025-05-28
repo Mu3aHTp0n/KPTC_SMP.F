@@ -1,5 +1,5 @@
 import { ChangeEvent, InputHTMLAttributes, useState } from 'react';
-import { useForm, UseFormRegister, FieldValues } from 'react-hook-form';
+import { UseFormRegister, FieldValues } from 'react-hook-form';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -8,7 +8,9 @@ import {
 	faEyeSlash,
 } from '@fortawesome/free-solid-svg-icons';
 
-import './InputField.css';
+import cn from 'classnames';
+
+import style from './InputField.module.scss';
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
 	placeholder: string;
@@ -30,10 +32,6 @@ export default function InputField({
 	required = false,
 	styles,
 }: Props) {
-	const { resetField } = useForm({
-		mode: 'onChange',
-	});
-
 	const [isActive, setIsActive] = useState(false);
 	const [isShowPassword, setIsShowPassword] = useState(false);
 	const [isHasError, setIsHasError] = useState(false);
@@ -45,12 +43,17 @@ export default function InputField({
 	const inputType = type === 'password' && isShowPassword ? 'text' : type;
 
 	return (
-		<div className='relative'>
+		<div className={`relative ${styles}`}>
 			<div
-				className={`field flex relative h-13 text-left pl-3 border rounded-xl bg-[#FAFAFC] ${styles} ${isHasError ? 'border-red-600' : ''}`}
+				className={cn(style.field, 'filed h-13 pl-3 border', {
+					'border-red-600': isHasError,
+				})}
 			>
 				<label
-					className={`field-label ${value || isActive ? '-translate-y-3 scale-[0.7] text-[#4A88FC]' : ''} ${isActive && isHasError ? 'text-red-600' : ''}`}
+					className={cn(style.fieldLabel, {
+						'-translate-y-3 scale-[0.7] text-[#4A88FC]': value || isActive,
+						'text-red-600': isActive && isHasError,
+					})}
 				>
 					{placeholder}
 				</label>
@@ -58,7 +61,7 @@ export default function InputField({
 					value={value}
 					className='field-input relative z-10 w-full h-12 pt-3 bg-transparent focus:outline-none'
 					type={inputType}
-					{...register(name, {
+					{...register(name!, {
 						required: `Необходимо заполнить поле: ${placeholder}`,
 					})}
 					placeholder=''

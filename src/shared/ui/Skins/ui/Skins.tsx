@@ -1,14 +1,16 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
+import { Link } from 'react-router-dom';
 import { SkinCard } from '@shared/ui/SkinCard';
+import Modal from '@shared/ui/Modal/ui/Modal';
 
 import edikSkin from '@pages/HomePage/assets/Эдик.png';
 import egorSkin from '@pages/HomePage/assets/Егор.png';
 import danyaSkin from '@pages/HomePage/assets/Даня.png';
 import arturSkin from '@pages/HomePage/assets/Артур.png';
-import RegistrationModal from '@widgets/RegistrationModal/ui';
-import Modal from '@shared/ui/Modal/Modal';
-import { useState } from 'react';
+
+import styles from './Skins.module.scss'
+import { LoginModal } from '@widgets/LoginModal';
 
 export const Skins = () => {
 
@@ -17,7 +19,7 @@ export const Skins = () => {
 	const isLogged = !!localStorage.getItem('accessToken');
 
 	return (
-		<section className='flex gap-1 rounded-2xl overflow-hidden'>
+		<section className={styles.skinsContainer}>
 			<SkinCard
 				source={edikSkin}
 				styles='drop-shadow-[-2px_30px_3px_rgba(0,0,0,0.65)]'
@@ -28,20 +30,20 @@ export const Skins = () => {
 			/>
 			<div className='flex flex-col gap-1'>
 				<div className='flex justify-center h-1/2 items-center bg-[#111111]'>
-					<h1 className='text-7xl text-center font-bold text-blue-600'>
+					<h1 className={styles.serverTitle}>
 						KPTC SMP
 					</h1>
 				</div>
 				<div className='flex justify-center h-1/2 items-center bg-[#111111]'>
 					{isLogged ? (
 						<Link to={'/how-to-play'}>
-							<button className='border-none text-white bg-blue-600'>
+							<button className='border-none text-white bg-blue-600 text-xl'>
 								Начать игру
 							</button>
 						</Link>
 					) : (
 						<button
-							className='border-none text-white bg-blue-600'
+							className='border-none text-white bg-blue-600 text-xl'
 							onClick={() => setIsShow(true)}
 						>
 							Начать игру
@@ -58,7 +60,7 @@ export const Skins = () => {
 				styles='drop-shadow-[2px_30px_3px_rgba(0,0,0,0.65)]'
 			/>
 			<Modal isOpen={isShow} setClose={setIsShow} title={'Регистрация'}>
-				<RegistrationModal />
+				<LoginModal type={'registration'}/>
 			</Modal>
 		</section>
 	)

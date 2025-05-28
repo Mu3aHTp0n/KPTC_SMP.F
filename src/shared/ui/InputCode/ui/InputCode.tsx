@@ -1,19 +1,25 @@
 import { ChangeEvent, InputHTMLAttributes, useState } from 'react';
-import { useForm, UseFormRegister, FieldValues } from 'react-hook-form';
+import { UseFormRegister, FieldValues } from 'react-hook-form';
 import { useUserStore } from '@app/store/user';
 import { $api } from '@app/api';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
-import TextButton from '../../TextButton/TextButton';
+import { TextButton } from '@shared/ui/TextButton';
 
-import './InputField.css';
+import style from './InputCode.module.scss';
+import cn from 'classnames';
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
 	placeholder: string;
 	onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 	register: UseFormRegister<FieldValues>;
 	styles?: string;
+}
+
+interface IErrorMessage {
+	email?: string;
+	message?: string;
 }
 
 export default function InputCode({
@@ -27,13 +33,9 @@ export default function InputCode({
 	required = false,
 	styles,
 }: Props) {
-	const { resetField } = useForm({
-		mode: 'onChange',
-	});
-
 	const [isActive, setIsActive] = useState(false);
 	const [isHasError, setIsHasError] = useState(false);
-	const [errorMessage, setErrorMessage] = useState('');
+	const [errorMessage, setErrorMessage] = useState<IErrorMessage>({});
 	const [isSent, setIsSent] = useState(false);
 	const [timer, setTimer] = useState(0);
 
@@ -53,20 +55,27 @@ export default function InputCode({
 					email: email,
 				});
 			} catch (error) {
-				setErrorMessage(error.email);
+				setErrorMessage(error);
 			}
 		} else {
-			setErrorMessage('Пожалуйста заполните поле электронной почты')
+			setErrorMessage({
+				message: 'Пожалуйста заполните поле электронной почты',
+			});
 		}
 	};
 
 	return (
 		<div className='relative'>
 			<div
-				className={`field flex relative h-13 text-left pl-3 border rounded-xl bg-[#FAFAFC] ${styles} ${isHasError ? 'border-red-600' : ''}`}
+				className={cn(style.field, styles, 'h-13 border', {
+					'border-red-600': isHasError,
+				})}
 			>
 				<label
-					className={`field-label ${value || isActive ? '-translate-y-3 scale-[0.7] text-[#4A88FC]' : ''} ${isActive && isHasError ? 'text-red-600' : ''}`}
+					className={cn(style.fieldLabel, {
+						'-translate-y-3 scale-[0.7] text-[#4A88FC]': value || isActive,
+						'text-red-600': isActive && isHasError,
+					})}
 				>
 					{placeholder}
 				</label>
@@ -74,7 +83,7 @@ export default function InputCode({
 					value={value}
 					className='field-input relative z-10 w-full h-12 pt-3 bg-transparent focus:outline-none'
 					type={type}
-					{...register(name, {
+					{...register(name!, {
 						required: `Необходимо заполнить поле: ${placeholder}`,
 					})}
 					placeholder=''
@@ -114,7 +123,12 @@ export default function InputCode({
 					Необходимо заполнить поле: {placeholder}
 				</p>
 			)}
-			{ errorMessage && <p className={'text-red-700'}>{errorMessage}</p> }
+			{errorMessage.email && (
+				<p className={'text-red-700'}>{errorMessage.email}</p>
+			)}
+			{errorMessage.message && (
+				<p className={'text-red-700'}>{errorMessage.message}</p>
+			)}
 		</div>
 	);
 }

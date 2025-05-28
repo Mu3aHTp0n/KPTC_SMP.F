@@ -1,15 +1,17 @@
 import { HTMLAttributes } from 'react';
 
+import styles from './TextButton.module.scss'
+
 interface Props extends HTMLAttributes<HTMLButtonElement> {
 	text: string;
 	onPress: () => void;
 	disabled?: boolean;
 }
 
-export default function TextButton({ text, onPress, disabled }: Props) {
+export const TextButton = ({ text, onPress, disabled }: Props) => {
 	return (
 		<button
-			className='p-0 border-none text-sm text-[#4A88FC] transition duration-100 hover:text-[#79BBFF] focus:outline-none'
+			className={styles.textButton}
 			disabled={disabled}
 			type={'button'}
 			onClick={onPress}
