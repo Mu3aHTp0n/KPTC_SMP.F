@@ -4,6 +4,8 @@ import { createPortal } from 'react-dom';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import styles from './Modal.module.scss';
+
 interface Props {
 	isOpen: boolean;
 	setClose: (isOpen: boolean) => void;
@@ -16,26 +18,21 @@ export default function Modal({ isOpen, setClose, title, children }: Props) {
 		<>
 			{isOpen &&
 				createPortal(
-					<div
-						className='flex fixed z-50 
-				inset-0 h-full overflow-auto 
-				bg-black/60'
-						onMouseDown={() => setClose(false)}
-					>
+					<div className={styles.backdrop} onMouseDown={() => setClose(false)}>
 						<section
-							className='absolute top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 w-[28rem] bg-white rounded-3xl p-8'
+							className={styles.modal}
 							onMouseDown={e => e.stopPropagation()}
 						>
 							<button
-								className='absolute top-2 right-2 px-2 py-1 text-red-700 font-bold border-none hover:bg-slate-100'
+								className={styles.exitButton}
 								onClick={() => setClose(false)}
 							>
 								<FontAwesomeIcon icon={faXmark} className='text-2xl' />
 							</button>
-							<header className='flex justify-center'>
-								<h3 className='text-2xl mb-6'>{title}</h3>
+							<header className={styles.modalHeader}>
+								<h3 className={styles.modalTitle}>{title}</h3>
 							</header>
-							<main className='text-center text-sm'>{children}</main>
+							<main className={styles.modalBody}>{children}</main>
 						</section>
 					</div>,
 					document.body,
