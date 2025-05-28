@@ -1,5 +1,7 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 
+import cn from 'classnames';
+
 interface Props {
 	currentPage: string;
 	countPage: number;
@@ -25,7 +27,7 @@ export const Pagination = ({
 		buttonList.push(
 			<NavLink key={count} to={`/${currentPage}?page=${count}`}>
 				<button
-					className={`${pageNumber === count ? 'bg-blue-900 scale-95' : 'bg-blue-800 hover:bg-blue-900'} border-none text-white focus:outline-none`}
+					className={cn('border-none text-white focus:outline-none', pageNumber === count ? 'bg-blue-900 scale-95' : 'bg-blue-800 hover:bg-blue-900')}
 				>
 					{count}
 				</button>

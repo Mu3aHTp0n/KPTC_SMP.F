@@ -1,13 +1,13 @@
 import React from 'react';
-import Article from '@entities/news/ui/Article/Article';
+import Article from '@entities/news/ui/Article/ui/Article';
 import { INewsList } from '@shared/model/INewsList';
 
-export const NewsList: React.FC<INewsList> = ({ news })=> {
+export const NewsList: React.FC<INewsList> = ({ news }) => {
 	return (
 		<>
 			{news?.map(article => {
 				if (article.title.length >= 33) {
-					article.title = article.title.substring(0, 33) + '...';
+					article.title = article.title.substring(0, 32) + '...';
 				}
 				return (
 					<Article
@@ -21,4 +21,4 @@ export const NewsList: React.FC<INewsList> = ({ news })=> {
 			})}
 		</>
 	);
-}
+};

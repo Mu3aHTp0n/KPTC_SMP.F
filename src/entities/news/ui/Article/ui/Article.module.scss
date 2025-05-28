@@ -1,0 +1,26 @@
+@use '../../../../../pages/NewsPage/ui/NewsPage.module';
+
+.article {
+    display: block;
+    transition: 
+        opacity 250ms ease-in-out,
+        transform 250ms ease-in-out;
+    &:hover {
+        opacity: 1;
+    }
+}
+
+.articlePreview {
+    width: 100%;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    aspect-ratio: 67/44;
+}
+.articleTitle {
+    color: white;
+    font-size: 1.25rem;
+    word-break: break-word;
+    &:hover {
+        color: #4A88FC;
+    }
+}
