@@ -1,0 +1,16 @@
+.textButton {
+  padding: 0;
+  border: none;
+  transition: color 100ms ease, outline 100ms ease;
+  color: #4A88FC;
+  font-size: .875rem;
+  &:hover {
+    color: #79bbff;
+  }
+  &:focus {
+    outline: none;
+  }
+  &:disabled {
+    padding: .25rem .5rem;
+  }
+}

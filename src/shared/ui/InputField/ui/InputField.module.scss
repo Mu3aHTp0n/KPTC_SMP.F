@@ -1,0 +1,24 @@
+.field {
+    display: flex;
+    position: relative;
+    text-align: left;
+    padding-left: .75rem;
+    border-radius: 12px;
+    background-color: #fafafc;
+    &:focus-within {
+        border-color: #4A88FC;
+    }
+    &:focus-within .field-label {
+        color: #4A88FC;
+    }
+}
+
+.fieldLabel {
+    font-size: 1rem;
+    position: absolute;
+    top: 50%;
+    translate: 0 -50%;
+    color: darkgray;
+    transition-duration: 150ms;
+    transform-origin: left;
+}

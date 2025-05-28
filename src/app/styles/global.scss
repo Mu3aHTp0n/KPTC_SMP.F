@@ -1,0 +1,114 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap');
+
+#root {
+    min-height: 100vh;
+	background-color: rgb(25, 25, 25);
+}
+
+:root {
+	font-family: "Noto Sans TC", sans-serif;
+	line-height: 1.5;
+	font-weight: 500;
+	color: #ecf2ff;
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+html {
+	@media screen and (max-width: 768px) {
+		font-size: 14px;
+	}
+	@media screen and (max-width: 576px) {
+		font-size: 12px;
+	}
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	min-height: 100vh;
+}
+
+a {
+	font-weight: 500;
+	color: #646cff;
+	text-decoration: inherit;
+}
+a:hover {
+	color: #535bf2;
+}
+
+h2 {
+	font-size: 2em;
+	font-weight: bold;
+}
+h3 {
+	font-size: 1.125em;
+	font-weight: bold;
+}
+
+a.active {
+    color: #4a88fc;
+}
+
+button {
+	border-radius: 8px;
+	border: 1px solid #e7e8ee;
+	padding: 0.6em 1.2em;
+	font-size: 1em;
+	font-weight: 500;
+	font-family: inherit;
+	background-color: transparent;
+	color: #3c3f44;
+	cursor: pointer;
+	transition: border-color 0.25s;
+}
+button:disabled {
+	cursor: no-drop;
+	background: #e7e8ee;
+	color: #B9BCC6;
+}
+button:disabled:hover {
+	border-color: #e7e8ee;
+}
+button:hover {
+	border-color: #3c3f44;
+}
+button:focus,
+button:focus-visible {
+	outline: 4px auto -webkit-focus-ring-color;
+}
+
+
+// --ui-core-c-base: #fff;
+//    --ui-core-c-gray: #a0a0a0;
+//    --ui-core-c-gray-2: #9a9bab;
+//    --ui-core-c-gray-3: #7f808b;
+//    --ui-core-c-gray-4: #32323c;
+//    --ui-core-c-green: #20b26c;
+//    --ui-core-c-primary: #9eff00;
+//    --ui-core-c-secondary: #c2ff5f;
+//    --ui-core-c-positive: #16cb81;
+//    --ui-core-c-negative: #ff4141;
+//    --ui-core-c-warning: #ec7532;
+//    --ui-core-c-dark-1: #13141c;
+//    --ui-core-c-dark-2: #1b1b24;
+//    --ui-core-c-dark-3: #282a35;
+//    --ui-core-c-dark-4: #2c2d33;
+//    --ui-core-c-dark-5: #1f202a;
+//    --ui-core-c-dark-6: #292a32;
+//    --ui-core-c-dark-7: #21222d;
+//    --ui-core-c-dark-8: #171821;
+//    --ui-core-c-dark-9: #1e1f2b;
+//    --ui-core-c-dark-10: #323442;
+//    --ui-core-c-dark-11: #7a7c8a;
+//    --ui-core-c-dark-12: #292b38;
+//    --ui-core-c-dark-13: #575a73;
+//    --ui-core-c-dark-14: #7f818c;
+//    --ui-core-c-dark-15: #24252f;
