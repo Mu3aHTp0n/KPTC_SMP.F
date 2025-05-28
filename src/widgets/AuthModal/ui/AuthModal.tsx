@@ -10,19 +10,26 @@ interface IForm {
 	password: string;
 }
 
-export default function AuthModal() {
+interface IProps {
+	setModalType: (type: string) => void;
+}
+
+interface IError {
+	message?: string;
+	password?: string;
+}
+
+export const AuthModal = ({ setModalType }: IProps)=> {
 	const {
 		register,
-		handleSubmit,
-		formState: { errors },
-	} = useForm<IForm>();
+	} = useForm();
 
 	const [formData, setFormData] = useState({
 		username: '',
 		password: '',
 	});
 
-	const [errorMessage, setErrorMessage] = useState('');
+	const [errorMessage, setErrorMessage] = useState<IError>({});
 
 	const onSubmit: SubmitHandler<IForm> = async data => {
 		try {
@@ -35,16 +42,20 @@ export default function AuthModal() {
 				'refreshToken',
 				response.data.jwtTokenPairDto.refreshToken,
 			);
-			setErrorMessage('');
+			setErrorMessage({});
 			location.reload();
 		} catch (error) {
-			setErrorMessage(error.response.data.message);
+			setErrorMessage(error);
 		}
 	};
 
 	const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
 		setFormData({ ...formData, [event.target.name]: event.target.value });
 	};
+
+	const changeModal = (type: string) => {
+		setModalType(type)
+	}
 
 	return (
 		<form
@@ -55,34 +66,42 @@ export default function AuthModal() {
 		>
 			<InputField
 				register={register}
+				pattern={'^[a-zA-Z0-9_]+$'}
 				value={formData.username}
 				onChange={handleInputChange}
 				placeholder='Ник'
 				required={true}
 				name={'username'}
-				minLength={8}
+				minLength={3}
+				maxLength={16}
 			/>
 			<InputField
 				register={register}
 				value={formData.password}
 				onChange={handleInputChange}
 				placeholder='Пароль'
+				pattern={
+					'^[a-zA-Z0-9!@#$%^&*()_+\\\\-=\\\\[\\\\]{};\':\\"\\\\\\\\|,.<>\\\\/?]+$'
+				}
 				required={true}
 				name={'password'}
 				type='password'
 				minLength={8}
+				maxLength={30}
 				styles='mt-4'
 			/>
-			<div className={'text-left my-3'}>
+			{errorMessage.password && <p className={'text-red-700'}>{errorMessage.password}</p>}
+			<div className={'flex items-center justify-between text-left my-3'}>
 				<p
-					onClick={() => alert('Вспомнишь, напишешь)')}
-					className='text-blue-600 m-2'
+					onClick={() => changeModal('passwordReset')}
+					className='text-blue-600 cursor-pointer m-2'
 				>
 					Забыли пароль?
 				</p>
+				<p className={'text-blue-600 cursor-pointer'} onClick={() => changeModal('registration')}>Регистрация</p>
 			</div>
-			{errorMessage && <p className={'text-red-700'}>{errorMessage}</p>}
-			<button className='border-none text-white bg-blue-600 mt-4' type='submit'>
+			{errorMessage.message && <p className={'text-red-700'}>{errorMessage.message}</p>}
+			<button className='border-none px-6 py-3 text-white bg-blue-600 mt-4' type='submit'>
 				Войти
 			</button>
 		</form>

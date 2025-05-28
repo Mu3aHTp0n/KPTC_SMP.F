@@ -1,18 +1,12 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useUserStore } from '@app/store/user';
-import InputField from '@shared/ui/InputField/ui/InputField.tsx';
-import { registration } from '@entities/user/api/registration';
-import InputCode from '@shared/ui/InputCode/ui/InputCode';
-import { auth } from '@entities/user/api/auth';
 
-interface IForm {
-	username: string;
-	email: string;
-	code: string;
-	password: string;
-	confirmPassword: string;
-}
+import { auth } from '@entities/user';
+import { registration } from '@entities/user';
+
+import InputField from '@shared/ui/InputField/ui/InputField.tsx';
+import InputCode from '@shared/ui/InputCode/ui/InputCode';
 
 interface IErrorMessage {
 	username?: string;
@@ -23,10 +17,7 @@ interface IErrorMessage {
 }
 
 export default function RegistrationModal() {
-	const {
-		register,
-		formState: { errors },
-	} = useForm<IForm>();
+	const { register } = useForm();
 	const setEmail = useUserStore(state => state.setEmail);
 
 	const [regForm, setRegForm] = useState({
@@ -47,8 +38,8 @@ export default function RegistrationModal() {
 	};
 
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
 		try {
-			event.preventDefault();
 			await registration(regForm);
 			const response = await auth({
 				username: regForm.username,
@@ -64,7 +55,6 @@ export default function RegistrationModal() {
 			);
 			location.reload();
 		} catch (error) {
-			console.log(error);
 			setErrorMessage(error);
 		}
 	};
@@ -77,6 +67,7 @@ export default function RegistrationModal() {
 				placeholder='Ник в майнкрафте'
 				pattern={'^[a-zA-Z0-9_]+$'}
 				required={true}
+				minLength={3}
 				maxLength={16}
 				value={regForm.username}
 				onChange={handleInputChange}
@@ -86,9 +77,6 @@ export default function RegistrationModal() {
 			)}
 			<InputField
 				register={register}
-				pattern={
-					'^[a-zA-Z0-9!@#$%^&*()_+\\\\-=\\\\[\\\\]{};\':\\"\\\\\\\\|,.<>\\\\/?]+$'
-				}
 				name='email'
 				placeholder='Электронная почта'
 				required={true}
@@ -117,6 +105,9 @@ export default function RegistrationModal() {
 				register={register}
 				name='password'
 				placeholder='Пароль'
+				pattern={
+					'^[a-zA-Z0-9!@#$%^&*()_+\\\\-=\\\\[\\\\]{};\':\\"\\\\\\\\|,.<>\\\\/?]+$'
+				}
 				required={true}
 				type='password'
 				minLength={8}
@@ -132,6 +123,9 @@ export default function RegistrationModal() {
 				register={register}
 				name='confirmPassword'
 				placeholder='Подтверждение пароля'
+				pattern={
+					'^[a-zA-Z0-9!@#$%^&*()_+\\\\-=\\\\[\\\\]{};\':\\"\\\\\\\\|,.<>\\\\/?]+$'
+				}
 				required={true}
 				type='password'
 				minLength={8}
