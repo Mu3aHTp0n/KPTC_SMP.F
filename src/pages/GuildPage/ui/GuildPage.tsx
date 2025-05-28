@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { fetchGuildOrders } from '@entities/guild/api/fetchGuildOrders';
+
 import Loader from '@shared/ui/Loader/Loader';
 import { Pagination } from '@shared/ui/Pagination';
 
 import quest from '@shared/assets/quest.png';
+
 import { OrderListResponse } from '@entities/guild';
 
 interface IQuest {
@@ -17,7 +19,7 @@ interface IQuest {
 
 export default function GuildPage() {
 	const [searchParams] = useSearchParams();
-	const pageNumber: number = +searchParams.get('page');
+	const pageNumber: number = +searchParams.get('page')!;
 
 	const [error, setError] = useState('');
 	const [isPending, setIsPending] = useState(true);
@@ -29,12 +31,16 @@ export default function GuildPage() {
 
 	useEffect(() => {
 		async function fetchGuildPage() {
+			setQuestList({
+				guildOrders: [],
+				countPage: 0,
+			});
+			setIsPending(true);
 			try {
 				const response = await fetchGuildOrders(pageNumber);
 				setQuestList(response.data);
 				setError('');
 			} catch (error) {
-				console.log(error);
 				setError(error.message);
 			} finally {
 				setIsPending(false);
@@ -45,7 +51,7 @@ export default function GuildPage() {
 
 	return (
 		<div className='bg-[#191919] pt-8 text-white'>
-			<div className='container max-w-screen-xl mx-auto'>
+			<div className='container px-4 max-w-screen-xl mx-auto'>
 				<header className='bg-[#111111] mb-4 rounded-lg px-6 py-2'>
 					<h2>Еженедельные задания</h2>
 				</header>
@@ -55,7 +61,9 @@ export default function GuildPage() {
 				) : (
 					<>
 						<section className='flex md:flex-row flex-col gap-3 mb-10'>
-							{questList.guildOrders.toString() ? (
+							{isPending ? (
+								<Loader />
+							) : questList.guildOrders.toString() ? (
 								<div className='bg-[#111] flex-[5] items-center px-2 py-4 grid gap-y-10 gap-x-4 grid-cols-2 grid-rows-3 lg:grid-cols-3 lg:grid-rows-2 rounded-xl'>
 									{questList.guildOrders?.map(order => {
 										return (
@@ -72,11 +80,16 @@ export default function GuildPage() {
 								</div>
 							) : (
 								<div className='bg-[#111] flex-[5] justify-center items-center px-6 py-12 rounded-xl'>
-									<p className={'text-xl text-center'}>Пока нет никаких заданий</p>
+									<p className={'text-xl text-center'}>
+										Пока нет никаких заданий
+									</p>
 								</div>
 							)}
 							<div className='bg-[#111] flex-[5] w-full lg:max-w-[45%] text-xl rounded-xl p-4'>
-								<h3 style={{wordBreak: 'break-word'}} className='text-center text-2xl mb-4'>
+								<h3
+									style={{ wordBreak: 'break-word' }}
+									className='text-center text-2xl mb-4'
+								>
 									{guildQuest?.header}
 								</h3>
 								<p style={{ wordBreak: 'break-word' }}>{guildQuest?.message}</p>
