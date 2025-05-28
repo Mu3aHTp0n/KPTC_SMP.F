@@ -1,14 +1,20 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
+import { SetNewPasswordModal } from '@entities/user/ui/SetNewPasswordModal';
 import MainPage from '@pages/MainPage/ui/MainPage';
+import AdminPage from '@pages/AdminPage';
 import ProfilePage from '@pages/ProfilePage/ui/ProfilePage';
-import NewsDetailPage from '@pages/NewsDetailPage/ui/NewsDetailPage';
 import HomePage from '@pages/HomePage';
 import NewsPage from '@pages/NewsPage/ui/NewsPage';
 import GuildPage from '@pages/GuildPage';
 import HowToPlayPage from '@pages/HowToPlayPage/ui/HowToPlayPage';
-import { routes } from '@shared/constants/routes';
-import { useEffect } from 'react';
+import NewsDetailPage from '@pages/NewsDetailPage/ui/NewsDetailPage';
+import NotFound from '@pages/NotFound';
+
+import Modal from '@shared/ui/Modal/ui/Modal';
+
+import { ROUTES } from '@shared/constants/routes';
 
 const App = () => {
 	useEffect(() => {
@@ -45,14 +51,17 @@ const App = () => {
 			<BrowserRouter>
 				<Routes>
 					<Route path='/' element={<MainPage />}>
-						<Route path='/' element={<HomePage />} />
-						<Route path={routes.news} element={<NewsPage />} />
-						<Route path={routes.guild} element={<GuildPage />} />
-						<Route path='/how-to-play' element={<HowToPlayPage />} />
+						<Route path={'/'} element={<HomePage />} >
+							<Route path={'/password-reset'} element={<Modal title={'Смена пароля'} isOpen={true} setClose={() => null}><SetNewPasswordModal/></Modal>}/>
+						</Route>
+						<Route path={ROUTES.news} element={<NewsPage />} />
+						<Route path={ROUTES.guild} element={<GuildPage />} />
+						<Route path={ROUTES.howToPlay} element={<HowToPlayPage />} />
 					</Route>
-					<Route path={routes.news + '/:id'} element={<NewsDetailPage />} />
-					<Route path={routes.profile + '/*'} element={<ProfilePage />} />
-					{/*<Route path={"*"} element={}/>*/}
+					<Route path={ROUTES.news + '/:id'} element={<NewsDetailPage />} />
+					<Route path={ROUTES.profile + '/*'} element={<ProfilePage />} />
+					<Route path={ROUTES.admin} element={<AdminPage />}/>
+					<Route path={"*"} element={<NotFound />}/>
 				</Routes>
 			</BrowserRouter>
 		</>
