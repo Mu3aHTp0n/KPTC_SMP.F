@@ -11,4 +11,5 @@ export const refreshToken = async () => {
 	});
 	localStorage.setItem('refreshToken', response.data.refreshToken);
 	localStorage.setItem('accessToken', response.data.accessToken);
+	return response;
 };

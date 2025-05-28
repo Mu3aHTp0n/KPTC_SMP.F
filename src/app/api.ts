@@ -11,14 +11,20 @@ export const $api = axios.create({
 $api.interceptors.response.use(
 	(response: AxiosResponse) => response,
 	async (error: AxiosError) => {
+		const originalRequest = error.config;
 		if (error instanceof AxiosError) {
-			if (error.message === 'Network Error') {
-					await refreshToken();
-					$api.defaults.headers['Authorization'] = 'Bearer ' + localStorage.getItem('accessToken');
+			if (!error.response && error.config && !error.config.isRetry) {
+				originalRequest.isRetry = true
+				try {
+					const response = await refreshToken();
+					originalRequest.headers.set('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+					$api.defaults.headers['Authorization'] = 'Bearer ' + response.data.accessToken;
+					return $api.request(originalRequest);
+				} catch (e) {
+					console.error('Пользователь не авторизован и/или ' + e);
+				}
 			}
 			if (error.response) {
-				if (error.response.status === 401) {
-				}
 				console.error('Ошибка сервера: ', error.response.data);
 				return Promise.reject(error.response.data);
 			} else if (error.request) {
