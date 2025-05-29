@@ -37,7 +37,7 @@ export const HomeHeader = () => {
 				try {
 					const response = await getImage();
 					setUsername(response.data.username);
-					setUserRoles(response.data.role);
+					setUserRoles(response.data.roles);
 					if (response.data.avatarUrl === 'null') {
 						setUserPhoto(defaultUserIcon);
 						return;

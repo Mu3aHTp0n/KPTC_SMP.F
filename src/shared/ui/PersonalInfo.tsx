@@ -72,7 +72,7 @@ export default function PersonalInfo({ userData }: Props) {
 			formData.append('image', selectedImage);
 			const response = await changeUserPhoto(formData);
 			setErrorMessage('');
-			setImageUrl(response.data.avatarUrl);
+			setImageUrl(response.data.downloadUrl);
 			alert('Аватарка успешно изменена')
 			setIsShow(false);
 			setSelectedImage(null);
