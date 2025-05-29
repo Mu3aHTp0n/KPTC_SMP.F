@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useUserStore } from '@app/store/user';
 import { fetchUserData } from '@entities/user/api/fetchUserData';
 
-import { Route, Routes, NavLink } from 'react-router-dom';
+import { Route, Routes, NavLink, useNavigate } from 'react-router-dom';
 
 import AccountOverview from '@shared/ui/AccountOverview';
 import ProfileHeader from '@shared/ui/ProfileHeader/ProfileHeader.tsx';
@@ -28,10 +28,15 @@ export default function ProfilePage() {
 
 	const [isPending, setIsPending] = useState(true);
 
+	const navigate = useNavigate();
+
 	useEffect(() => {
+		if (!localStorage.getItem('refreshToken')) {
+			navigate('/');
+			return;
+		}
 		const fetchData = async () => {
 			const response = await fetchUserData();
-			response.data.registrationDate = response.data.registrationDate.split('-').reverse().join('.')
 			setIsPending(false);
 			setUserDto(response.data);
 			setDateRegistration(response.data.registrationDate);
