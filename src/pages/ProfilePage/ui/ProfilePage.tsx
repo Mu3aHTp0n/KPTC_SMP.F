@@ -14,6 +14,7 @@ import { faCircleUser, faIdCard } from '@fortawesome/free-solid-svg-icons';
 export default function ProfilePage() {
 	const setEmail = useUserStore(state => state.setEmail);
 	const setDateRegistration = useUserStore(state => state.setRegistrationDate);
+	const setUserId = useUserStore(state => state.setId)
 
 	const username = useUserStore(state => state.username);
 	const email = useUserStore(state => state.email);
@@ -35,6 +36,7 @@ export default function ProfilePage() {
 			setUserDto(response.data);
 			setDateRegistration(response.data.registrationDate);
 			setEmail(response.data.email);
+			setUserId(response.data.id);
 		};
 		fetchData()
 	}, []);

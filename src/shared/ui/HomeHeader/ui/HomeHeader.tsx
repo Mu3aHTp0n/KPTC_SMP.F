@@ -15,11 +15,14 @@ import defaultUserIcon from '@shared/assets/defaultUserIcon.jpg';
 import logo from '@shared/assets/logo.svg';
 
 import styles from './HomeHeader.module.scss';
+import { ROUTES } from '@shared/constants/routes';
 
 export const HomeHeader = () => {
 	const setImageUrl = useUserStore(state => state.setImageUrl);
 	const setUsername = useUserStore(state => state.setUsername);
+	const setUserRoles = useUserStore(state => state.setRoles);
 	const imageUrl = useUserStore(state => state.imageUrl);
+	const userRoles = useUserStore(state => state.roles);
 
 	const isAuth = !!localStorage.getItem('accessToken');
 	const [userPhoto, setUserPhoto] = useState(imageUrl);
@@ -29,13 +32,14 @@ export const HomeHeader = () => {
 	const [isShow, setIsShow] = useState(false);
 
 	useEffect(() => {
-		const fetchImage = async () => {
+		const fetchUserData = async () => {
 			if (localStorage.getItem('refreshToken')) {
 				try {
 					const response = await getImage();
 					setUsername(response.data.username);
+					setUserRoles(response.data.role);
 					if (response.data.avatarUrl === 'null') {
-						setUserPhoto(defaultUserIcon)
+						setUserPhoto(defaultUserIcon);
 						return;
 					}
 					setUserPhoto(response.data.avatarUrl);
@@ -46,7 +50,7 @@ export const HomeHeader = () => {
 				}
 			}
 		};
-		fetchImage();
+		fetchUserData();
 	}, []);
 
 	return (
@@ -58,7 +62,9 @@ export const HomeHeader = () => {
 				</Link>
 				<nav>
 					<div
-						className={cn(styles.burgerMenu, {[styles['active']]: isActiveBurger})}
+						className={cn(styles.burgerMenu, {
+							[styles['active']]: isActiveBurger,
+						})}
 						onClick={() => setIsActiveBurger(prev => !prev)}
 					>
 						<span></span>
@@ -66,7 +72,9 @@ export const HomeHeader = () => {
 						<span></span>
 					</div>
 					<ul
-						className={cn(styles.headerList, {[styles['active']]: isActiveBurger})}
+						className={cn(styles.headerList, {
+							[styles['active']]: isActiveBurger,
+						})}
 					>
 						<li>
 							<NavLink className='text-white text-xl' to='/'>
@@ -94,7 +102,9 @@ export const HomeHeader = () => {
 					{isAuth ? (
 						<div className={styles.avatarContainer}>
 							<img
-								className={cn(styles.avatar, {[styles['avatarActive']]: isActiveAvatar})}
+								className={cn(styles.avatar, {
+									[styles['avatarActive']]: isActiveAvatar,
+								})}
 								src={userPhoto}
 								alt={':('}
 								onClick={() => setIsActiveAvatar(prev => !prev)}
@@ -109,6 +119,11 @@ export const HomeHeader = () => {
 								<Link className={styles.menuItem} to={'/profile/personal-info'}>
 									Настройки аккаунта
 								</Link>
+								{userRoles.includes('ROLE_ADMIN') && (
+									<Link className={styles.menuItem} to={ROUTES.admin}>
+										Админка
+									</Link>
+								)}
 								<button className={styles.menuItem} onClick={logout}>
 									Выйти
 								</button>
@@ -124,7 +139,7 @@ export const HomeHeader = () => {
 					)}
 				</section>
 				<Modal isOpen={isShow} setClose={setIsShow} title={'Авторизация'}>
-					<LoginModal type={'auth'}/>
+					<LoginModal type={'auth'} />
 				</Modal>
 			</div>
 		</header>
