@@ -1,1 +1,1 @@
-export * from "./InfoBlockItem";
+export * from './ui'

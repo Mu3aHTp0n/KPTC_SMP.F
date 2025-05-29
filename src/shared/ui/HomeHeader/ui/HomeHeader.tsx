@@ -21,7 +21,7 @@ export const HomeHeader = () => {
 	const setUsername = useUserStore(state => state.setUsername);
 	const imageUrl = useUserStore(state => state.imageUrl);
 
-	const isAuth = localStorage.getItem('accessToken');
+	const isAuth = !!localStorage.getItem('accessToken');
 	const [userPhoto, setUserPhoto] = useState(imageUrl);
 
 	const [isActiveAvatar, setIsActiveAvatar] = useState(false);
@@ -35,6 +35,7 @@ export const HomeHeader = () => {
 					const response = await getImage();
 					setUsername(response.data.username);
 					if (response.data.avatarUrl === 'null') {
+						setUserPhoto(defaultUserIcon)
 						return;
 					}
 					setUserPhoto(response.data.avatarUrl);
@@ -94,7 +95,7 @@ export const HomeHeader = () => {
 						<div className={styles.avatarContainer}>
 							<img
 								className={cn(styles.avatar, {[styles['avatarActive']]: isActiveAvatar})}
-								src={userPhoto ? imageUrl : defaultUserIcon}
+								src={userPhoto}
 								alt={':('}
 								onClick={() => setIsActiveAvatar(prev => !prev)}
 							/>
