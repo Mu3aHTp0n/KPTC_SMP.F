@@ -1,6 +1,6 @@
-import { IArticle } from './IArticle';
+import { INewListItem } from './INewListItem';
 
 export interface IFetchNews {
-	news: IArticle[];
+	news: INewListItem[];
 	countPage: number;
 }

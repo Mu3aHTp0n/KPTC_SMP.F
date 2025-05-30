@@ -5,7 +5,7 @@ import { fetchUserData } from '@entities/user/api/fetchUserData';
 import { Route, Routes, NavLink, useNavigate } from 'react-router-dom';
 
 import AccountOverview from '@shared/ui/AccountOverview';
-import ProfileHeader from '@shared/ui/ProfileHeader/ProfileHeader.tsx';
+import { ProfileHeader } from '@entities/user/ui/ProfileHeader/';
 import PersonalInfo from '@shared/ui/PersonalInfo';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

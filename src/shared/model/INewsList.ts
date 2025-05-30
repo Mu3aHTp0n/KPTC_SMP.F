@@ -1,5 +1,5 @@
-import { IArticle } from '@entities/news/model/IArticle';
+import { INewListItem } from '@entities/news/model/INewListItem';
 
 export interface INewsList {
-	news: IArticle[];
+	news: INewListItem[];
 }

@@ -5,7 +5,7 @@ import cn from "classnames"
 import styles from './ProfileHeader.module.scss'
 import logo from '@shared/assets/logo.svg';
 
-export default function ProfileHeader({nickname = 'Loading...'}) {
+export const ProfileHeader = ({nickname = 'Loading...'}) => {
 
 	const navigate = useNavigate()
 

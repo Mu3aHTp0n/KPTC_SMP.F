@@ -1,4 +1,4 @@
-export interface IArticle {
+export interface INewListItem {
 	id: number;
 	title: string;
 	previewUrl: string;

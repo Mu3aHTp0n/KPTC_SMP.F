@@ -8,7 +8,7 @@ import { Pagination } from '@shared/ui/Pagination';
 
 import quest from '@shared/assets/quest.png';
 
-import { OrderListResponse } from '@entities/guild';
+import { IOrderListResponse } from '@entities/guild';
 
 interface IQuest {
 	id: number;
@@ -23,7 +23,7 @@ export default function GuildPage() {
 
 	const [error, setError] = useState('');
 	const [isPending, setIsPending] = useState(true);
-	const [questList, setQuestList] = useState<OrderListResponse>({
+	const [questList, setQuestList] = useState<IOrderListResponse>({
 		guildOrders: [],
 		countPage: 0,
 	});
