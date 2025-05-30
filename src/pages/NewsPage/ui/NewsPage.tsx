@@ -27,6 +27,8 @@ export default function NewsPage() {
 
 	useEffect(() => {
 		async function loadNews() {
+			setNewsList({...newsList, news: []})
+			setIsPending(true)
 			try {
 				const response = await fetchNews(pageNumber);
 				setNewsList(response.data);
