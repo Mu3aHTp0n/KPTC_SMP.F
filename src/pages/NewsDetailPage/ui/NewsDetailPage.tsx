@@ -4,16 +4,17 @@ import { Link, useParams } from 'react-router-dom';
 import { fetchNewsById } from '@entities/news/api/fetchNewsById';
 
 import altImage from '@shared/assets/newsAltImage.jpg';
+import { INewsDetail } from '@entities/news';
 
 export default function NewsDetailPage() {
 	const { id } = useParams();
 
-	const [articleData, setArticleData] = useState({
+	const [articleData, setArticleData] = useState<INewsDetail>({
 		id: 0,
 		title: '',
 		content: '',
 		datePublication: '',
-		imageUrl: '',
+		previewUrl: '',
 	});
 
 	useEffect(() => {
@@ -40,7 +41,7 @@ export default function NewsDetailPage() {
 				<div className='relative overflow-hidden p-12'>
 					<img
 						className='absolute left-1/2 -translate-x-1/2 w-3/4 rounded-2xl mb-4 blur-[24px] brightness-50 select-none'
-						src={articleData.imageUrl}
+						src={articleData.previewUrl}
 						draggable={false}
 						onError={event => {
 							event.currentTarget.src = altImage;
@@ -49,7 +50,7 @@ export default function NewsDetailPage() {
 					/>
 					<img
 						className='z-10 relative rounded-2xl max-h-[500px] mx-auto my-6'
-						src={articleData.imageUrl}
+						src={articleData.previewUrl}
 						onError={event => {
 							event.currentTarget.src = altImage;
 						}}

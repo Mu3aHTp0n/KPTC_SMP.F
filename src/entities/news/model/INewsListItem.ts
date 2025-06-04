@@ -1,4 +1,4 @@
-export interface INewListItem {
+export interface INewsListItem {
 	id: number;
 	title: string;
 	previewUrl: string;

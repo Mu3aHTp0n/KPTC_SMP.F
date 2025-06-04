@@ -1,5 +1,5 @@
 export interface ILoginResponse {
-	jwtTokenPairDto: {
+	tokens: {
 		refreshToken: string;
 		accessToken: string;
 	};
