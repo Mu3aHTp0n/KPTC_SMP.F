@@ -20,7 +20,7 @@ interface IProps {
 	setShow: (value: boolean) => void;
 }
 
-function ChangePasswordModal({ setShow }: IProps) {
+export const ChangePasswordModal = ({ setShow }: IProps) => {
 	const { register } = useForm();
 
 	const [formData, setFormData] = useState({
@@ -161,5 +161,3 @@ function ChangePasswordModal({ setShow }: IProps) {
 		</>
 	);
 }
-
-export default ChangePasswordModal;

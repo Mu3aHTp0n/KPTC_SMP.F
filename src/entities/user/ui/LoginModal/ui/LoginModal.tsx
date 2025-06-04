@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import { AuthModal } from '@widgets/AuthModal/ui/AuthModal';
-import RegistrationModal from '@widgets/RegistrationModal/ui';
+import { AuthModal } from '@entities/user/ui/AuthModal';
+import RegistrationModal from '@entities/user/ui/RegistrationModal/ui';
 import { PasswordResetModal } from '@entities/user';
 
 interface IProps {

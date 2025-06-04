@@ -36,11 +36,11 @@ export const AuthModal = ({ setModalType }: IProps)=> {
 			const response = await auth(data);
 			localStorage.setItem(
 				'accessToken',
-				response.data.jwtTokenPairDto.accessToken,
+				response.data.tokens.accessToken,
 			);
 			localStorage.setItem(
 				'refreshToken',
-				response.data.jwtTokenPairDto.refreshToken,
+				response.data.tokens.refreshToken,
 			);
 			setErrorMessage({});
 			location.reload();

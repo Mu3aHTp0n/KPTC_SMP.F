@@ -50,7 +50,6 @@ export const ChangeEmailModal= ({ userData, setShow }: Props) => {
 			await sendCurrentEmailCode(userData.email);
 			setErrorMessage('');
 		} catch (error) {
-			// @ts-ignore
 			setErrorMessage(error.message);
 		}
 	};

@@ -47,11 +47,11 @@ export default function RegistrationModal() {
 			});
 			localStorage.setItem(
 				'refreshToken',
-				response.data.jwtTokenPairDto.refreshToken,
+				response.data.tokens.refreshToken,
 			);
 			localStorage.setItem(
 				'accessToken',
-				response.data.jwtTokenPairDto.accessToken,
+				response.data.tokens.accessToken,
 			);
 			location.reload();
 		} catch (error) {

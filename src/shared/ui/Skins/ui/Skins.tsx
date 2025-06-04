@@ -10,7 +10,7 @@ import danyaSkin from '@pages/HomePage/assets/Даня.png';
 import arturSkin from '@pages/HomePage/assets/Артур.png';
 
 import styles from './Skins.module.scss'
-import { LoginModal } from '@widgets/LoginModal';
+import { LoginModal } from '@entities/user/ui/LoginModal';
 
 export const Skins = () => {
 
