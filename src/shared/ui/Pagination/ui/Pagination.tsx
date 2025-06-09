@@ -1,37 +1,35 @@
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 import cn from 'classnames';
 
 interface Props {
-	currentPage: string;
-	countPage: number;
-	pageNumber: number;
+	paramName?: string;
 	pageCounts: number;
 }
 
 export const Pagination = ({
-	currentPage,
-	countPage,
-	pageNumber,
+	paramName = 'page',
 	pageCounts,
 }: Props) => {
-	const navigate = useNavigate();
+	const [searchParams, setSearchParams] = useSearchParams();
+
+	const currentPageValue = Number(searchParams.get(paramName)) || 1;
 
 	const goToPage = (page: number) => {
 		if (page < 1 || page > pageCounts) return;
-		navigate(`/${currentPage}?page=${page}`);
+		setSearchParams({ [paramName]: page.toString() })
 	}
 
 	const buttonList = [];
-	for (let count = 1; count <= countPage; count++) {
+	for (let count = 1; count <= pageCounts; count++) {
 		buttonList.push(
-			<NavLink key={count} to={`/${currentPage}?page=${count}`}>
 				<button
-					className={cn('border-none text-white focus:outline-none', pageNumber === count ? 'bg-blue-900 scale-95' : 'bg-blue-800 hover:bg-blue-900')}
+					onClick={() => goToPage(count)}
+					key={count}
+					className={cn('border-none text-white focus:outline-none', currentPageValue === count ? 'bg-blue-900 scale-95' : 'bg-blue-800 hover:bg-blue-900')}
 				>
 					{count}
 				</button>
-			</NavLink>,
 		);
 	}
 
@@ -40,7 +38,7 @@ export const Pagination = ({
 			{buttonList.length !== 0 && (
 				<button
 					className='bg-blue-800 border-none text-white hover:bg-blue-900 focus:outline-none'
-					onClick={() => goToPage(pageNumber - 1)}
+					onClick={() => goToPage(currentPageValue - 1)}
 				>
 					&#9001;
 				</button>
@@ -49,7 +47,7 @@ export const Pagination = ({
 			{buttonList.length !== 0 && (
 				<button
 					className='bg-blue-800 border-none text-white hover:bg-blue-900 focus:outline-none'
-					onClick={() => goToPage(pageNumber + 1)}
+					onClick={() => goToPage(currentPageValue + 1)}
 				>
 					&#9002;
 				</button>
