@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useNewsStore } from '@app/store/news';
 
 import { fetchNews } from '@entities/news/api/fetchNews';
 
@@ -9,29 +10,29 @@ import { Pagination } from '@shared/ui/Pagination';
 
 import cn from 'classnames';
 
-import { IFetchNews } from '@entities/news/model';
-
 import styles from '@entities/news/ui/Article/ui/Article.module.scss';
 
 export default function NewsPage() {
 	const [searchParams] = useSearchParams();
 
+	const newsList = useNewsStore(state => state.newsList);
+	const setNewsList = useNewsStore(state => state.setNewsList);
+	const countNewsPage = useNewsStore(state => state.countPage);
+	const setCountNewsPage = useNewsStore(state => state.setCountPage);
+
 	const pageNumber = +searchParams.get('page')!;
 
-	const [newsList, setNewsList] = useState<IFetchNews>({
-		news: [],
-		countPage: 1,
-	});
 	const [error, setError] = useState('');
 	const [isPending, setIsPending] = useState(true);
 
 	useEffect(() => {
 		async function loadNews() {
-			setNewsList({...newsList, news: []})
-			setIsPending(true)
+			setNewsList([]);
+			setIsPending(true);
 			try {
 				const response = await fetchNews(pageNumber);
-				setNewsList(response.data);
+				setNewsList(response.data.news);
+				setCountNewsPage(response.data.countPage);
 				setError('');
 			} catch (error) {
 				setError(error.message);
@@ -43,25 +44,18 @@ export default function NewsPage() {
 	}, [pageNumber]);
 
 	return (
-		<div className='bg-[#191919] pt-8'>
-			{error !== '' && (
-				<p className='text-red-700 text-xl text-center'>{error}</p>
-			)}
+		<div className='bg-[#191919] pt-8 '>
+			{!!error && <p className='text-red-700 text-xl text-center'>{error}</p>}
 			{isPending ? (
 				<Loader />
 			) : (
 				<>
-					{newsList.news.toString() ? (
+					{newsList.toString() ? (
 						<>
 							<div className={cn(styles.articlesContainer, 'container')}>
-								<NewsList news={newsList.news} />
+								<NewsList news={newsList} />
 							</div>
-							<Pagination
-								currentPage='news'
-								countPage={newsList.countPage}
-								pageNumber={+pageNumber}
-								pageCounts={newsList.countPage}
-							/>
+							<Pagination pageCounts={countNewsPage} />
 						</>
 					) : (
 						<p
