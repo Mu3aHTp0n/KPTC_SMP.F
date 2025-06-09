@@ -10,8 +10,7 @@ export default function HowToPlayPage() {
 				<div className={styles.faqHeader}>
 					<h1>⚡️ KPTC-SMP: ЧАВО ДЛЯ ВЫЖИВШИХ ⚡️</h1>
 					<blockquote className={styles.quote}>
-						❝ Здесь нет глупых вопросов. Есть только трупы тех, кто их задавал.
-						❞
+						❝ Здесь нет глупых вопросов. Есть только трупы тех, кто их задавал. ❞
 					</blockquote>
 				</div>
 
@@ -168,7 +167,7 @@ export default function HowToPlayPage() {
 					<ul>
 						<li>
 							Эти сообщения приходят с текстового канала
-							"〖✍〗майнкрафт-дискорд "
+							"〖✍️〗майнкрафт-дискорд "
 						</li>
 						<li>
 							Он позволяет отправлять сообщения с discord в minecraft и из

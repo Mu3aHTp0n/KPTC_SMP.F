@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import { useUserStore } from '@app/store/user';
 import { fetchUserData } from '@entities/user/api/fetchUserData';
 
-import { Route, Routes, NavLink } from 'react-router-dom';
+import { Route, Routes, NavLink, useNavigate } from 'react-router-dom';
 
 import AccountOverview from '@shared/ui/AccountOverview';
-import ProfileHeader from '@shared/ui/ProfileHeader/ProfileHeader.tsx';
+import { ProfileHeader } from '@entities/user/ui/ProfileHeader/';
 import PersonalInfo from '@shared/ui/PersonalInfo';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -28,10 +28,15 @@ export default function ProfilePage() {
 
 	const [isPending, setIsPending] = useState(true);
 
+	const navigate = useNavigate();
+
 	useEffect(() => {
+		if (!localStorage.getItem('refreshToken')) {
+			navigate('/');
+			return;
+		}
 		const fetchData = async () => {
 			const response = await fetchUserData();
-			response.data.registrationDate = response.data.registrationDate.split('-').reverse().join('.')
 			setIsPending(false);
 			setUserDto(response.data);
 			setDateRegistration(response.data.registrationDate);
@@ -68,7 +73,7 @@ export default function ProfilePage() {
 									className={'flex items-center text-[#6b707b]'}
 									to={'/profile/personal-info'}
 								>
-									<FontAwesomeIcon icon={faIdCard} className='mr-2 h-6 w-6' />{' '}
+									<FontAwesomeIcon icon={faIdCard} className='mr-2 h-6 w-6' />
 									Личные данные
 								</NavLink>
 							</li>

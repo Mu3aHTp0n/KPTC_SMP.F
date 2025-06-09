@@ -7,7 +7,7 @@ import { logout } from '@entities/user/api/logout';
 import { NavLink, Link } from 'react-router-dom';
 
 import Modal from '@shared/ui/Modal/ui/Modal';
-import { LoginModal } from '@widgets/LoginModal';
+import { LoginModal } from '@entities/user/ui/LoginModal';
 
 import cn from 'classnames';
 
@@ -16,6 +16,7 @@ import logo from '@shared/assets/logo.svg';
 
 import styles from './HomeHeader.module.scss';
 import { ROUTES } from '@shared/constants/routes';
+import { UserRoles } from '@entities/user/constants';
 
 export const HomeHeader = () => {
 	const setImageUrl = useUserStore(state => state.setImageUrl);
@@ -37,7 +38,7 @@ export const HomeHeader = () => {
 				try {
 					const response = await getImage();
 					setUsername(response.data.username);
-					setUserRoles(response.data.role);
+					setUserRoles(response.data.roles);
 					if (response.data.avatarUrl === 'null') {
 						setUserPhoto(defaultUserIcon);
 						return;
@@ -119,7 +120,7 @@ export const HomeHeader = () => {
 								<Link className={styles.menuItem} to={'/profile/personal-info'}>
 									Настройки аккаунта
 								</Link>
-								{userRoles.includes('ROLE_ADMIN') && (
+								{userRoles.includes(UserRoles.ADMIN) && (
 									<Link className={styles.menuItem} to={ROUTES.admin}>
 										Админка
 									</Link>

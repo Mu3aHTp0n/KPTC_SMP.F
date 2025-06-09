@@ -1,5 +1,5 @@
 export interface IUserDataResponse {
 	username: string;
-	role: string[];
+	roles: string[];
 	avatarUrl: string;
 }

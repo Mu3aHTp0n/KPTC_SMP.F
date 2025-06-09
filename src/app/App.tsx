@@ -51,8 +51,8 @@ const App = () => {
 			<BrowserRouter>
 				<Routes>
 					<Route path='/' element={<MainPage />}>
-						<Route path={'/'} element={<HomePage />} >
-							<Route path={'/password-reset'} element={<Modal title={'Смена пароля'} isOpen={true} setClose={() => null}><SetNewPasswordModal/></Modal>}/>
+						<Route path='/' element={<HomePage />} >
+							<Route path={ROUTES.passwordReset} element={<Modal title={'Смена пароля'} isOpen={true} setClose={() => null}><SetNewPasswordModal/></Modal>}/>
 						</Route>
 						<Route path={ROUTES.news} element={<NewsPage />} />
 						<Route path={ROUTES.guild} element={<GuildPage />} />
@@ -61,7 +61,7 @@ const App = () => {
 					<Route path={ROUTES.news + '/:id'} element={<NewsDetailPage />} />
 					<Route path={ROUTES.profile + '/*'} element={<ProfilePage />} />
 					<Route path={ROUTES.admin} element={<AdminPage />}/>
-					<Route path={"*"} element={<NotFound />}/>
+					<Route path="*" element={<NotFound />}/>
 				</Routes>
 			</BrowserRouter>
 		</>

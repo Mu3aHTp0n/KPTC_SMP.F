@@ -57,6 +57,22 @@ a.active {
     color: #4a88fc;
 }
 
+input {
+	color: #3c3f44;
+}
+
+textarea {
+	min-width: 240px;
+	min-height: 2rem;
+	resize: vertical;
+	border-radius: 8px;
+	padding: 4px 8px;
+	outline: 1px solid #e5e7eb;
+	&:focus {
+		outline: 1px solid #4A88FC;
+	}
+}
+
 button {
 	border-radius: 8px;
 	border: 1px solid #e7e8ee;

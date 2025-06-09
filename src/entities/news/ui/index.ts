@@ -1,2 +1,2 @@
-export * from './Article/ui'
+export * from './Article'
 export * from './NewsList'

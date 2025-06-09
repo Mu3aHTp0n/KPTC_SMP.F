@@ -4,11 +4,12 @@ import { Link, useParams } from 'react-router-dom';
 import { fetchNewsById } from '@entities/news/api/fetchNewsById';
 
 import altImage from '@shared/assets/newsAltImage.jpg';
+import { INewsDetail } from '@entities/news';
 
 export default function NewsDetailPage() {
 	const { id } = useParams();
 
-	const [articleData, setArticleData] = useState({
+	const [articleData, setArticleData] = useState<INewsDetail>({
 		id: 0,
 		title: '',
 		content: '',
