@@ -6,39 +6,28 @@ import { fetchGuildOrders } from '@entities/guild/api/fetchGuildOrders';
 import Loader from '@shared/ui/Loader/Loader';
 import { Pagination } from '@shared/ui/Pagination';
 
-import quest from '@shared/assets/quest.png';
-
-import { IOrderListResponse } from '@entities/guild';
-
-interface IQuest {
-	id: number;
-	header: string;
-	message: string;
-	pseudonym: string;
-}
+import { useGuildStore } from '@app/store/guild';
+import { OrderInformation, OrdersList } from '@entities/guild';
 
 export default function GuildPage() {
+	const guildOrders = useGuildStore(state => state.guildOrders);
+	const setGuildOrders = useGuildStore(state => state.setGuildOrders);
+	const pageCounts = useGuildStore(state => state.countPage);
+	const setPageCount = useGuildStore(state => state.setCountPage);
+
 	const [searchParams] = useSearchParams();
 	const pageNumber: number = +searchParams.get('page')!;
 
 	const [error, setError] = useState('');
 	const [isPending, setIsPending] = useState(true);
-	const [questList, setQuestList] = useState<IOrderListResponse>({
-		guildOrders: [],
-		countPage: 0,
-	});
-	const [guildQuest, setGuildQuest] = useState<IQuest>();
 
 	useEffect(() => {
 		async function fetchGuildPage() {
-			setQuestList({
-				guildOrders: [],
-				countPage: 0,
-			});
 			setIsPending(true);
 			try {
 				const response = await fetchGuildOrders(pageNumber);
-				setQuestList(response.data);
+				setGuildOrders(response.data.guildOrders);
+				setPageCount(response.data.countPage);
 				setError('');
 			} catch (error) {
 				setError(error.message);
@@ -63,21 +52,8 @@ export default function GuildPage() {
 						<section className='flex md:flex-row flex-col gap-3 mb-10'>
 							{isPending ? (
 								<Loader />
-							) : questList.guildOrders.toString() ? (
-								<div className='bg-[#111] flex-[5] items-center px-2 py-4 grid gap-y-10 gap-x-4 grid-cols-2 grid-rows-3 lg:grid-cols-3 lg:grid-rows-2 rounded-xl'>
-									{questList.guildOrders?.map(order => {
-										return (
-											<img
-												className='cursor-pointer transiotion-filter duration-200 ease hover:brightness-75'
-												key={order.id}
-												title={order.header}
-												onClick={() => setGuildQuest(order)}
-												src={quest}
-												alt='Quest'
-											/>
-										);
-									})}
-								</div>
+							) : guildOrders.toString() ? (
+								<OrdersList/>
 							) : (
 								<div className='bg-[#111] flex-[5] justify-center items-center px-6 py-12 rounded-xl'>
 									<p className={'text-xl text-center'}>
@@ -85,25 +61,9 @@ export default function GuildPage() {
 									</p>
 								</div>
 							)}
-							<div className='bg-[#111] flex-[5] w-full lg:max-w-[45%] text-xl rounded-xl p-4'>
-								<h3
-									style={{ wordBreak: 'break-word' }}
-									className='text-center text-2xl mb-4'
-								>
-									{guildQuest?.header}
-								</h3>
-								<p style={{ wordBreak: 'break-word' }}>{guildQuest?.message}</p>
-								<span className='text-base text-blue-600 font-bold'>
-									{guildQuest?.pseudonym}
-								</span>
-							</div>
+							<OrderInformation/>
 						</section>
-						<Pagination
-							currentPage='guild'
-							countPage={questList.countPage}
-							pageNumber={+pageNumber}
-							pageCounts={questList.countPage}
-						/>
+						<Pagination pageCounts={pageCounts} />
 					</>
 				)}
 			</div>
