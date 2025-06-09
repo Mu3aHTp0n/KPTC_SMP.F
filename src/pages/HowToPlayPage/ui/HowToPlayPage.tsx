@@ -10,8 +10,7 @@ export default function HowToPlayPage() {
 				<div className={styles.faqHeader}>
 					<h1>⚡️ KPTC-SMP: ЧАВО ДЛЯ ВЫЖИВШИХ ⚡️</h1>
 					<blockquote className={styles.quote}>
-						❝ Здесь нет глупых вопросов. Есть только трупы тех, кто их задавал.
-						❞
+						❝ Здесь нет глупых вопросов. Есть только трупы тех, кто их задавал. ❞
 					</blockquote>
 				</div>
 

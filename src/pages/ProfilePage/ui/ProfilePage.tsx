@@ -73,7 +73,7 @@ export default function ProfilePage() {
 									className={'flex items-center text-[#6b707b]'}
 									to={'/profile/personal-info'}
 								>
-									<FontAwesomeIcon icon={faIdCard} className='mr-2 h-6 w-6' />{' '}
+									<FontAwesomeIcon icon={faIdCard} className='mr-2 h-6 w-6' />
 									Личные данные
 								</NavLink>
 							</li>

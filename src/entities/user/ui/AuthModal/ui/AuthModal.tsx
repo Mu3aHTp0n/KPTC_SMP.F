@@ -1,5 +1,5 @@
-import { ChangeEvent, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { ChangeEvent, FormEvent, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 import { auth } from '@entities/user/api/auth'
 
@@ -31,7 +31,8 @@ export const AuthModal = ({ setModalType }: IProps)=> {
 
 	const [errorMessage, setErrorMessage] = useState<IError>({});
 
-	const onSubmit: SubmitHandler<IForm> = async data => {
+	const onSubmit = async (event: FormEvent<HTMLFormElement>, data: IForm) => {
+		event.preventDefault()
 		try {
 			const response = await auth(data);
 			localStorage.setItem(
@@ -44,7 +45,7 @@ export const AuthModal = ({ setModalType }: IProps)=> {
 			);
 			setErrorMessage({});
 			location.reload();
-		} catch (error) {
+		} catch (error: any) {
 			setErrorMessage(error);
 		}
 	};
@@ -58,12 +59,7 @@ export const AuthModal = ({ setModalType }: IProps)=> {
 	}
 
 	return (
-		<form
-			onSubmit={event => {
-				event.preventDefault();
-				onSubmit(formData);
-			}}
-		>
+		<form onSubmit={(event) => onSubmit(event, formData)}>
 			<InputField
 				register={register}
 				pattern={'^[a-zA-Z0-9_]+$'}
