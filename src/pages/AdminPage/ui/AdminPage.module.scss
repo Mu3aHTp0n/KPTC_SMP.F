@@ -1,0 +1,36 @@
+.loadScreen {}
+.loadScreenTitle {
+  display: flex;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 2rem;
+  @media screen and (max-width: 1240px) {
+    padding-inline: 1rem;
+  }
+}
+
+.form {
+  display: grid;
+  gap: .75rem;
+}
+.formButton {
+  background-color: #4A88FC;
+  color: #ecf2ff;
+}
+
+.icon {
+  color: #ecf2ff;
+}
+
+.separator {
+  border-width: 2px;
+  border-radius: 4px;
+  margin-block: 1.5rem;
+}
