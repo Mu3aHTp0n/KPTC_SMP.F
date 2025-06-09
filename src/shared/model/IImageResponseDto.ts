@@ -4,5 +4,5 @@ export interface IImageResponseDto {
 	mimeType: string;
 	size: number;
 	uploadedAt: string;
-	downloadUrl: string;
+	imageUrl: string;
 }

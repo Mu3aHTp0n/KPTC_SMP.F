@@ -24,3 +24,36 @@
         color: #4A88FC;
     }
 }
+
+.articleForm {
+    display: grid;
+    gap: .75rem;
+    img {
+        width: 100%;
+        border-radius: 6px;
+        aspect-ratio: 67 / 44;
+    }
+}
+
+.input {
+    color: #333;
+}
+
+.actionContainer {
+    position: relative;
+}
+.action {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: #191919FF;
+    border-radius: 12px 0 0 0;
+    button {
+        border: none;
+        color: #c8c8c8;
+        font-size: 1.125rem;
+        :hover {
+            color: color-mix(in oklab, #c8c8c8, #000 20%);
+        }
+    }
+}

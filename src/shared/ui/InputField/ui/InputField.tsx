@@ -36,7 +36,7 @@ export default function InputField({
 	const [isShowPassword, setIsShowPassword] = useState(false);
 	const [isHasError, setIsHasError] = useState(false);
 
-	function showPassword() {
+	const showPassword = () => {
 		setIsShowPassword(prev => !prev);
 	}
 
@@ -69,9 +69,7 @@ export default function InputField({
 					pattern={pattern}
 					minLength={minLength}
 					maxLength={maxLength}
-					onChange={event => {
-						onChange(event);
-					}}
+					onChange={onChange}
 					onFocus={() => setIsActive(true)}
 					onBlur={() => {
 						setIsHasError(!value);
@@ -79,12 +77,12 @@ export default function InputField({
 					}}
 				/>
 				{value && (
-					<div className='flex'>
+					<button type={'button'} className='p-0 border-none focus:outline-none flex'>
 						<FontAwesomeIcon
 							className='my-auto mx-2 h-4 w-4 text-[#B9B6CC] hover:text-gray-500'
 							icon={faCircleXmark}
 						/>
-					</div>
+					</button>
 				)}
 				{type === 'password' && (
 					<button
