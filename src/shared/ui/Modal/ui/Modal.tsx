@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 
 import { createPortal } from 'react-dom';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -14,18 +14,32 @@ interface Props {
 }
 
 export default function Modal({ isOpen, setClose, title, children }: Props) {
+
+	useEffect(() => {
+		if (isOpen) document.body.style.overflowY = 'hidden';
+		else document.body.style.overflowY = '';
+	}, [isOpen])
+
+	const modalOffCloseTouch = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+		event.stopPropagation();
+	}
+
+	const closeModal = () => {
+		setClose(false);
+	}
+
 	return (
 		<>
 			{isOpen &&
 				createPortal(
-					<div className={styles.backdrop} onMouseDown={() => setClose(false)}>
+					<div className={styles.backdrop} onMouseDown={closeModal}>
 						<section
 							className={styles.modal}
-							onMouseDown={e => e.stopPropagation()}
+							onMouseDown={modalOffCloseTouch}
 						>
 							<button
 								className={styles.exitButton}
-								onClick={() => setClose(false)}
+								onClick={closeModal}
 							>
 								<FontAwesomeIcon icon={faXmark} className='text-2xl' />
 							</button>

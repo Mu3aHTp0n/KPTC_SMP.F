@@ -9,6 +9,9 @@
 }
 
 .modal {
+  max-height: 100svh;
+  overflow-y: auto;
+
   position: absolute;
   top: 50%;
   left: 50%;
