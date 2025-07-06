@@ -141,8 +141,8 @@ const AdminPage = () => {
 		formData.append('title', addNewsData.title);
 		formData.append('content', addNewsData.content);
 		formData.append('image', selectedImage);
-		await createNews(formData);
 		try {
+			await createNews(formData);
 			alert('Новость успешно добавлена');
 		} catch (error) {
 			console.error(error);

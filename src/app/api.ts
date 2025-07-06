@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { refreshToken } from '@entities/user/api/refreshToken';
+import { logout } from '@entities/user';
 
 export const $api = axios.create({
 	baseURL: import.meta.env.VITE_BACKEND_HOST,
@@ -13,7 +14,7 @@ $api.interceptors.response.use(
 	async (error: AxiosError) => {
 		const originalRequest = error.config;
 		if (error instanceof AxiosError) {
-			if (!error.response && error.config && !error.config.isRetry) {
+			if (error.response?.status === 401 || !error.response && error.config && !error.config.isRetry) {
 				originalRequest.isRetry = true
 				try {
 					const response = await refreshToken();
@@ -21,7 +22,8 @@ $api.interceptors.response.use(
 					$api.defaults.headers['Authorization'] = 'Bearer ' + response.data.accessToken;
 					return $api.request(originalRequest);
 				} catch (e) {
-					console.error('Пользователь не авторизован и/или ' + e);
+					console.error(e);
+					logout();
 				}
 			}
 			if (error.response) {
