@@ -1,21 +1,18 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useGuildStore } from '@app/store/guild';
-import { useUserStore } from '@app/store/user';
 import { useForm } from 'react-hook-form';
 
 import { deleteOrder } from '@entities/guild';
+import { editOrder } from '@entities/guild';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons/faPenToSquare';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons/faTrashCan';
 
-import { UserRoles } from '@entities/user/constants';
-
 import Loader from '@shared/ui/Loader/Loader';
 import InputField from '@shared/ui/InputField/ui/InputField';
 
 import styles from './OrderInformation.module.scss';
-import { editOrder } from '@entities/guild/api/editOrder';
 
 export const OrderInformation = () => {
 	const { register } = useForm();
@@ -24,7 +21,6 @@ export const OrderInformation = () => {
 	const removeOrder = useGuildStore(state => state.removeOrder);
 	const setActiveOrder = useGuildStore(state => state.setActiveOrder);
 	const changeOrder = useGuildStore(state => state.changeOrder);
-	const userRoles = useUserStore(state => state.roles);
 
 	const [orderData, setOrderData] = useState({
 		header: activeOrder.header,
@@ -121,8 +117,7 @@ export const OrderInformation = () => {
 					<p className={styles.orderAuthor}>{activeOrder?.pseudonym}</p>
 				</div>
 			)}
-
-			{!!activeOrder.id && userRoles.includes(UserRoles.ADMIN) && (
+			{(!!activeOrder.id && location.pathname === '/admin') && (
 				<div className={styles.action}>
 					<button onClick={changeEditingStatus}>
 						<i>
