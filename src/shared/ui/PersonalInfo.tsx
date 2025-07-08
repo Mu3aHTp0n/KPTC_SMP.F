@@ -3,8 +3,8 @@ import { useUserStore } from '@app/store/user';
 
 import { changeUserPhoto } from '@entities/user/api/changeUserPhoto';
 
-import ChangePasswordModal from '@widgets/ChangePasswordModal/ui/ChangePasswordModal';
-import { ChangeEmailModal } from '@widgets/ChangeEmailModal/ui/ChangeEmailModal';
+import { ChangePasswordModal } from '@entities/user/ui/ChangePasswordModal';
+import { ChangeEmailModal } from '@entities/user/ui/ChangeEmailModal';
 import Modal from '@shared/ui/Modal/ui/Modal';
 import ProfileInfoBlock from '@shared/ui/ProfileInfoBlock/ProfileInfoBlock';
 import { InfoBlockItem } from '@shared/ui/InfoBlockItem/ui/InfoBlockItem';
@@ -25,7 +25,7 @@ export default function PersonalInfo({ userData }: Props) {
 	const [currentModal, setCurrentModal] = useState(1);
 	const [isShow, setIsShow] = useState(false);
 	const [selectedImage, setSelectedImage] = useState<File | null>(null);
-	const [previewImage, setPreviewImage] = useState('');
+	const [previewImage, setPreviewImage] = useState('')
 
 	const [modalTitle, setModalTitle] = useState('');
 
@@ -48,21 +48,14 @@ export default function PersonalInfo({ userData }: Props) {
 		}
 	};
 
-	const handleUploadImage = (event: ChangeEvent<HTMLInputElement>) => {
-		if (event.target.files && event.target.files.length > 0) {
-			const file = event.target.files[0];
-			setSelectedImage(file)
-			if (file) {
-				const objectUrl = URL.createObjectURL(file);
-				setPreviewImage(objectUrl);
-			}
-		}
-	};
-
 	const handleImageSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		if (!selectedImage) {
 			setErrorMessage('Отсутствует изображение')
+			return
+		}
+		if (selectedImage.type !== 'image/jpeg' && selectedImage.type !== 'image/png') {
+			setErrorMessage('Неверный тип файла. Доступны: jpg, jpeg, png')
 			return
 		}
 		setErrorMessage('')
@@ -72,7 +65,7 @@ export default function PersonalInfo({ userData }: Props) {
 			formData.append('image', selectedImage);
 			const response = await changeUserPhoto(formData);
 			setErrorMessage('');
-			setImageUrl(response.data.downloadUrl);
+			setImageUrl(response.data.imageUrl);
 			alert('Аватарка успешно изменена')
 			setIsShow(false);
 			setSelectedImage(null);
@@ -90,6 +83,17 @@ export default function PersonalInfo({ userData }: Props) {
 		setSelectedImage(null);
 		setPreviewImage('');
 	}
+
+	const handleSelectImage = (event: ChangeEvent<HTMLInputElement>) => {
+		if (event.target.files && event.target.files.length > 0) {
+			const file = event.target.files[0];
+			setSelectedImage(file)
+			if (file) {
+				const objectUrl = URL.createObjectURL(file);
+				setPreviewImage(objectUrl);
+			}
+		}
+	};
 
 	return (
 		<ProfileInfoBlock title='Личные данные' style='ml-8'>
@@ -133,16 +137,16 @@ export default function PersonalInfo({ userData }: Props) {
 				{currentModal === 3 && (
 					<form onSubmit={handleImageSubmit}>
 						{previewImage && (
-							<img
-								src={previewImage}
-								alt={'preview'}
-								className={'rounded-full'}
-							/>
+								<img
+									src={previewImage}
+									alt={'preview'}
+									className={'rounded-full'}
+								/>
 						)}
 						<input
 							type={'file'}
 							accept={'image/png, image/jpeg, image/jpg'}
-							onChange={handleUploadImage}
+							onChange={handleSelectImage}
 						/>
 						{errorMessage && <p className={'text-red-700'}>{errorMessage}</p>}
 						<button disabled={isPending} type={'submit'}>Отправить</button>
