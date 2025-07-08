@@ -1,0 +1,6 @@
+export * from './createNews'
+export * from './deleteNewsById'
+export * from './editNews'
+export * from './editNewsPreview'
+export * from './fetchNews'
+export * from './fetchNewsById'

@@ -1,0 +1,57 @@
+.content {
+  background-color: #191919;
+  padding-top: 2rem;
+  @media screen and (max-width: 1024px) {
+    padding-inline: 1rem;
+  }
+}
+
+.about {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+  color: white;
+  background-color: #111;
+  border-radius: 16px;
+  overflow: hidden;
+  @media screen and (max-width: 576px) {
+    padding-block: 1rem;
+  }
+}
+
+.playerImage {
+  position: relative;
+  user-select: none;
+  z-index: 2;
+  padding-top: .75rem;
+  @media screen and (max-width: 576px) {
+    display: none;
+  }
+}
+
+.matrixImage {
+  max-height: 450px;
+  @media screen and (max-width: 576px) {
+    max-height: 400px;
+  }
+  @media screen and (max-width: 480px) {
+    max-height: 350px;
+  }
+  @media screen and (max-width: 357px) {
+    max-height: 270px;
+  }
+}
+
+.voiceSection {
+  display: flex;
+  justify-content: space-around;
+  @media screen and (max-width: 768px) {
+    flex-direction: column-reverse;
+    h3 {
+      display: inline-block;
+    }
+  }
+}

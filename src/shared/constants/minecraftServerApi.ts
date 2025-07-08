@@ -1,0 +1,1 @@
+export const minecraftServerApi = "kptc-smp.online" as const

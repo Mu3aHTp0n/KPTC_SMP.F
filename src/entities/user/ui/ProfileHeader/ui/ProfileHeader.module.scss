@@ -1,0 +1,31 @@
+.header {
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+  align-items: center;
+  padding-inline: 2.5rem;
+  height: 70px;
+  background-color: #212121;
+  z-index: 10;
+}
+
+.logo {
+  height: 3rem;
+}
+
+.action {
+  position: relative;
+}
+.action:hover {
+  .exitButton {
+    display: block;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+.exitButton {
+  display: none;
+  position: absolute;
+  color: #c8c8c8;
+  transform: translateX(25%);
+}

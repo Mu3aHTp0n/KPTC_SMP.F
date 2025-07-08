@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: .5rem;
+  padding-block: 1rem;
+  @media screen and (max-width: 680px) {
+    flex-direction: column;
+    align-items: initial;
+  }
+}
+
+.blockTitle {
+  color: hsl(200, 10%, 65%);
+}
+.subTitle {
+  margin-top: .25rem;
+  margin-right: .75rem;
+  color: hsl(200, 10%, 85%);
+}
+.endItem {
+  color: hsl(200, 12%, 80%);
+  @media screen and (max-width: 768px) {
+    margin-top: .75rem;
+  }
+}
